@@ -91,7 +91,7 @@ const Admin = () => {
       formData.append('attendance', 'hadir');
 
       // GANTI URL INI DENGAN GOOGLE APPS SCRIPT URL ANDA
-      const response = await fetch('https://script.google.com/macros/s/AKfycbwXzCk8rnaRzHWSmmE1bQpEuHwZpDcz2gYIQgTPnOmdqQ12QLlJRL0Ayf7PuNcW81VC/exec', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwR7B7oumvegRHobNT28zV3d5QwLarfIwj_bNs96whdzKEd0uAwaG4a7W6WXvB83Bo/exec', {
         method: 'POST',
         body: formData,
         redirect: 'follow'
