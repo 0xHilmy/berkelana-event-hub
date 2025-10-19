@@ -111,11 +111,11 @@ const Index = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent"></div>
 
         <div className="container max-w-5xl mx-auto text-center relative z-10">
-          <div className="mb-8 inline-block">
-            <h1 className="text-7xl md:text-9xl font-black mb-2 tracking-tighter">
+          <div className="mb-8 flex flex-col items-center">
+            <h1 className="text-5xl sm:text-7xl md:text-9xl font-black my-2 tracking-tighter">
               Berkelana<span className="text-primary">.</span>
             </h1>
-            <div className="h-1 bg-gradient-primary"></div>
+            <div className="h-1 w-full max-w-xs bg-gradient-primary"></div>
           </div>
 
           <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-2xl mx-auto leading-relaxed">

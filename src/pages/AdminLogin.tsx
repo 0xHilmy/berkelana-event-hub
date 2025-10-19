@@ -18,6 +18,22 @@ const AdminLogin = () => {
     const adminUsername = import.meta.env.VITE_ADMIN_USERNAME;
     const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
 
+    // Debug: Log untuk development (hapus di production)
+    if (import.meta.env.DEV) {
+      console.log('Environment check:', {
+        hasUsername: !!adminUsername,
+        hasPassword: !!adminPassword,
+        inputUsername: username,
+        envUsername: adminUsername
+      });
+    }
+
+    // Check if environment variables are set
+    if (!adminUsername || !adminPassword) {
+      setError("Konfigurasi admin belum diatur. Hubungi administrator.");
+      return;
+    }
+
     if (username === adminUsername && password === adminPassword) {
       // Set session
       sessionStorage.setItem("adminAuth", "true");
