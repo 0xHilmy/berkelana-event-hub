@@ -1,14 +1,55 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MapPin, Calendar, Users } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const Index = () => {
+  const [userId, setUserId] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    // Get user ID from URL parameters (?id=vip001)
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    if (id) {
+      setUserId(id);
+    }
+  }, []);
+
+  const handleAttendEvent = async () => {
+    if (!userId) {
+      alert('ID pengguna tidak ditemukan di URL');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('id', userId);
+      formData.append('attendance', 'hadir');
+
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwWBUNpU2Pmhdx3wJDzHV11RNjjdnNcs9qED66rKRuKlZsrtAkUiBSwlUydy8Gsjbl9/exec', {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+      });
+
+      alert('Kehadiran berhasil dicatat!');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Terjadi kesalahan saat mencatat kehadiran');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4 bg-gradient-hero">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent"></div>
-        
+
         <div className="container max-w-5xl mx-auto text-center relative z-10">
           <div className="mb-8 inline-block">
             <h1 className="text-7xl md:text-9xl font-black mb-2 tracking-tighter">
@@ -16,37 +57,53 @@ const Index = () => {
             </h1>
             <div className="h-1 bg-gradient-primary"></div>
           </div>
-          
+
           <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-2xl mx-auto leading-relaxed">
             Kompetisi Terbesar Tahun Ini
           </p>
-          
+
           <p className="text-lg md:text-xl text-muted-foreground/80 mb-12 max-w-3xl mx-auto">
-            Bergabunglah dengan ratusan peserta dari seluruh Indonesia dalam kompetisi yang menguji 
+            Bergabunglah dengan ratusan peserta dari seluruh Indonesia dalam kompetisi yang menguji
             kemampuan, kreativitas, dan daya saing Anda. Saatnya tunjukkan potensi terbaik Anda!
           </p>
-          
-          <Button 
-            variant="hero" 
+
+          <div className="mb-4">
+            {userId && (
+              <p className="text-sm text-muted-foreground mb-2">
+                ID Anda: <span className="font-mono font-semibold text-primary">{userId}</span>
+              </p>
+            )}
+          </div>
+
+          <Button
+            variant="hero"
             size="lg"
             className="px-12 py-6 text-xl h-auto"
+            onClick={handleAttendEvent}
+            disabled={!userId || isSubmitting}
           >
-            Attend Event
+            {isSubmitting ? 'Mengirim...' : 'Attend Event'}
           </Button>
-          
+
+          {!userId && (
+            <p className="text-sm text-red-500 mt-4">
+              ID tidak ditemukan. Pastikan URL mengandung parameter ?id=
+            </p>
+          )}
+
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             <Card className="p-6 bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
               <Calendar className="w-8 h-8 text-primary mb-3 mx-auto" />
               <p className="text-sm text-muted-foreground">Tanggal</p>
               <p className="font-semibold">Segera Diumumkan</p>
             </Card>
-            
+
             <Card className="p-6 bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
               <Users className="w-8 h-8 text-primary mb-3 mx-auto" />
               <p className="text-sm text-muted-foreground">Peserta</p>
               <p className="font-semibold">Terbatas</p>
             </Card>
-            
+
             <Card className="p-6 bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
               <MapPin className="w-8 h-8 text-primary mb-3 mx-auto" />
               <p className="text-sm text-muted-foreground">Lokasi</p>
@@ -74,18 +131,18 @@ const Index = () => {
                 <MapPin className="w-6 h-6 text-primary" />
                 Detail Lokasi
               </h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Alamat</p>
                   <p className="text-lg">Jakarta Selatan, Indonesia</p>
                 </div>
-                
+
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Koordinat</p>
                   <p className="text-sm font-mono">-6.234348, 106.757195</p>
                 </div>
-                
+
                 <div className="pt-4 border-t border-border">
                   <p className="text-sm text-muted-foreground mb-2">Akses Transportasi</p>
                   <ul className="text-sm space-y-1 list-disc list-inside">
